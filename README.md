@@ -1,2 +1,2 @@
-# Pyprojekty
+# Pyprojects
 Python projects
