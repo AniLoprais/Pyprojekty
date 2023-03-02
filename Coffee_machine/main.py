@@ -37,24 +37,21 @@ def calculate_change(user_sum_coins, price):
 def fill_in_ingredients():
     return resources
 
+def consumption_ingredients(name_of_drink, ingredients):
+    ingredients["water"] = ingredients["water"] - MENU[name_of_drink]["ingredients"]["water"]
+    ingredients["milk"] = ingredients["milk"] - MENU[name_of_drink]["ingredients"]["milk"]
+    ingredients["coffee"] = ingredients["coffee"] - MENU[name_of_drink]["ingredients"]["coffee"]
+    print(f"Zbylé ingredience: {ingredients}")
+
+
 def calculate_ingredients(drink_name):
     if drink_name == "espresso":
-        rest_of_ingredience["water"] = rest_of_ingredience["water"] - MENU["espresso"]["ingredients"]["water"]
-        rest_of_ingredience["milk"] = rest_of_ingredience["milk"] - MENU["espresso"]["ingredients"]["milk"]
-        rest_of_ingredience["coffee"] = rest_of_ingredience["coffee"] - MENU["espresso"]["ingredients"]["coffee"]
-        print(f"Zbylé ingredience: {rest_of_ingredience}")
-
+       consumption_ingredients(drink_name, rest_of_ingredients)
     elif drink_name == "latte":
-        rest_of_ingredience["water"] = rest_of_ingredience["water"] - MENU["latte"]["ingredients"]["water"]
-        rest_of_ingredience["milk"] = rest_of_ingredience["milk"] - MENU["latte"]["ingredients"]["milk"]
-        rest_of_ingredience["coffee"] = rest_of_ingredience["coffee"] - MENU["latte"]["ingredients"]["coffee"]
-        print(f"Zbylé ingredience: {rest_of_ingredience}")
-
+        consumption_ingredients(drink_name, rest_of_ingredients)
     elif drink_name == "cappuccino":
-        rest_of_ingredience["water"] = rest_of_ingredience["water"] - MENU["cappuccino"]["ingredients"]["water"]
-        rest_of_ingredience["milk"] = rest_of_ingredience["milk"] - MENU["cappuccino"]["ingredients"]["milk"]
-        rest_of_ingredience["coffee"] = rest_of_ingredience["coffee"] - MENU["cappuccino"]["ingredients"]["coffee"]
-        print(f"Zbylé ingredience: {rest_of_ingredience}")
+        consumption_ingredients(drink_name, rest_of_ingredients)
+
 
 def ingredients_checker(in_water, in_milk, in_coffee):
     if in_water < 0:
@@ -67,13 +64,14 @@ def ingredients_checker(in_water, in_milk, in_coffee):
         print("Nedostatek ingrediencí. Zavolejte servis.")
         return False
     else:
+        print("Na váš nápoj máme dostatek ingrediencí.")
         return True
 
 
 # >>> Machine code <<<
 
 # We load the original amount of ingredients
-rest_of_ingredience = fill_in_ingredients()
+rest_of_ingredients = fill_in_ingredients()
 
 lets_continue = True
 
@@ -86,7 +84,7 @@ while(lets_continue):
 
     # Ingredients check in machine
     if user_choice != "report":
-        lets_continue = ingredients_checker(rest_of_ingredience["water"], rest_of_ingredience["milk"], rest_of_ingredience["coffee"])
+        lets_continue = ingredients_checker(rest_of_ingredients["water"], rest_of_ingredients["milk"], rest_of_ingredients["coffee"])
 
     # Should the code continue?
     if lets_continue == False:
@@ -94,7 +92,7 @@ while(lets_continue):
 
     # Control report
     if user_choice == "report":
-        report(rest_of_ingredience)
+        report(rest_of_ingredients)
 
     # The main code of the machine
     if user_choice == "espresso":
