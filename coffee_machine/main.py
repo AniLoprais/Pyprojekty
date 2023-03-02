@@ -29,7 +29,7 @@ def calculate_change(user_sum_coins, price):
     if refund >= 0:
         print("Nápoj se připravuje.")
         if refund > 0:
-            print(f"Zde jsou peníze navíc zpět: {refund}")
+            print(f"Zde jsou peníze navíc zpět: {refund} Kč")
 
     else:
         print(f"Nevhodili jste dostatek mincí. Ještě je zapotřebí vložit {price - user_sum_coins} Kč")
@@ -56,31 +56,58 @@ def calculate_ingredients(drink_name):
         rest_of_ingredience["coffee"] = rest_of_ingredience["coffee"] - MENU["cappuccino"]["ingredients"]["coffee"]
         print(f"Zbylé ingredience: {rest_of_ingredience}")
 
+def ingredients_checker(in_water, in_milk, in_coffee):
+    if in_water < 0:
+        print("Nedostatek ingrediencí. Zavolejte servis.")
+        return False
+    elif in_milk < 0:
+        print("Nedostatek ingrediencí. Zavolejte servis.")
+        return False
+    elif in_coffee < 0:
+        print("Nedostatek ingrediencí. Zavolejte servis.")
+        return False
+    else:
+        return True
+
 
 # >>> Machine code <<<
-
-# User choice - what kind of drink he wants
-user_choice = input("Co byste si dal/a? (espresso/latte/cappuccino): ")
 
 # We load the original amount of ingredients
 rest_of_ingredience = fill_in_ingredients()
 
-# Control report
-if user_choice == "report":
-    report(rest_of_ingredience)
+lets_continue = True
 
-# The main code of the machine
-if user_choice == "espresso":
-    print(f"Cena espressa je: {espresso_price} Kč")
-    sum = coins()
-    calculate_change(sum, espresso_price)
+while(lets_continue):
+    # User choice - what kind of drink he wants
+    user_choice = input("Co byste si dal/a? (espresso/latte/cappuccino): ")
 
-elif user_choice == "latte":
-    print(f"Cena latte je: {latte_price} Kč")
-    sum = coins()
-    calculate_change(sum, latte_price)
+    # Calculating how many ingredients are left
+    calculate_ingredients(user_choice)
 
-elif user_choice == "cappuccino":
-    print(f"Cena cappuccina je: {cappuccino_price} Kč")
-    sum = coins()
-    calculate_change(sum, cappuccino_price)
+    # Ingredients check in machine
+    if user_choice != "report":
+        lets_continue = ingredients_checker(rest_of_ingredience["water"], rest_of_ingredience["milk"], rest_of_ingredience["coffee"])
+
+    # Should the code continue?
+    if lets_continue == False:
+        break
+
+    # Control report
+    if user_choice == "report":
+        report(rest_of_ingredience)
+
+    # The main code of the machine
+    if user_choice == "espresso":
+        print(f"Cena espressa je: {espresso_price} Kč")
+        sum = coins()
+        calculate_change(sum, espresso_price)
+
+    elif user_choice == "latte":
+        print(f"Cena latte je: {latte_price} Kč")
+        sum = coins()
+        calculate_change(sum, latte_price)
+
+    elif user_choice == "cappuccino":
+        print(f"Cena cappuccina je: {cappuccino_price} Kč")
+        sum = coins()
+        calculate_change(sum, cappuccino_price)
